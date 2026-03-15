@@ -1,0 +1,86 @@
+openapi: 3.0.0
+info:
+  title: Event Management & Ticket Booking API
+  version: 1.0.0
+  description: A scalable backend for managing events and booking tickets.
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                email: { type: string }
+                password: { type: string }
+                role: { type: string, enum: [ORGANIZER, CUSTOMER] }
+      responses:
+        201: { description: Created }
+  /auth/login:
+    post:
+      summary: Login
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        200: { description: OK }
+  /events:
+    get:
+      summary: List events
+      tags: [Events]
+      parameters:
+        - name: page
+          in: query
+          schema: { type: integer }
+        - name: limit
+          in: query
+          schema: { type: integer }
+        - name: location
+          in: query
+          schema: { type: string }
+        - name: date
+          in: query
+          schema: { type: string, format: date }
+      responses:
+        200: { description: OK }
+    post:
+      summary: Create event (Organizer only)
+      tags: [Events]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string }
+                description: { type: string }
+                location: { type: string }
+                eventDate: { type: string, format: date-time }
+                totalTickets: { type: integer }
+                price: { type: number }
+      responses:
+        201: { description: Created }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
