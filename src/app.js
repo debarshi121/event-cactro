@@ -20,6 +20,14 @@ const bookingRoutes = require('./routes/bookings.routes');
 
 const app = express();
 
+// Request logging
+app.use((req, res, next) => {
+  res.on('finish', () => {
+    logger.info(`${req.method} ${req.originalUrl} ${res.statusCode} - ${req.ip}`);
+  });
+  next();
+});
+
 // Security Middleware
 app.use(helmet());
 app.use(cors());
