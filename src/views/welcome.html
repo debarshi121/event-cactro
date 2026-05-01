@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Management API</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+    header { text-align: center; padding: 3rem 0 2.5rem; }
+    header h1 { font-size: 2.4rem; font-weight: 700; color: #f8fafc; letter-spacing: -0.5px; }
+    header p { margin-top: 0.75rem; color: #94a3b8; font-size: 1.05rem; }
+    .badge-row { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.2rem; flex-wrap: wrap; }
+    .badge {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em;
+      padding: 0.25rem 0.65rem; border-radius: 999px; text-transform: uppercase;
+    }
+    .badge-green  { background: #14532d; color: #86efac; }
+    .badge-blue   { background: #1e3a5f; color: #93c5fd; }
+    .badge-violet { background: #3b1f6e; color: #c4b5fd; }
+    .docs-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      margin-top: 2rem; background: #6366f1; color: #fff;
+      padding: 0.65rem 1.4rem; border-radius: 8px; text-decoration: none;
+      font-weight: 600; font-size: 0.95rem; transition: background 0.2s;
+    }
+    .docs-link:hover { background: #4f46e5; }
+    .section { margin-top: 2.5rem; }
+    .section h2 {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #64748b; margin-bottom: 0.75rem;
+      padding-bottom: 0.4rem; border-bottom: 1px solid #1e293b;
+    }
+    .endpoint-group { margin-bottom: 1.5rem; }
+    .endpoint-group h3 { font-size: 0.9rem; font-weight: 600; color: #cbd5e1; margin-bottom: 0.5rem; }
+    .endpoint {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      background: #1e293b; border: 1px solid #334155;
+      border-radius: 8px; padding: 0.65rem 1rem;
+      margin-bottom: 0.4rem; font-size: 0.875rem;
+    }
+    .method {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em;
+      padding: 0.2rem 0.5rem; border-radius: 4px; min-width: 54px;
+      text-align: center; flex-shrink: 0; margin-top: 1px;
+    }
+    .GET    { background: #0c4a6e; color: #38bdf8; }
+    .POST   { background: #14532d; color: #4ade80; }
+    .PUT    { background: #451a03; color: #fb923c; }
+    .DELETE { background: #450a0a; color: #f87171; }
+    .PATCH  { background: #3b2f02; color: #fbbf24; }
+    .path   { font-family: "Fira Code", "Courier New", monospace; color: #e2e8f0; flex: 1; }
+    .desc   { color: #64748b; font-size: 0.82rem; margin-top: 0.15rem; }
+    .lock   { font-size: 0.7rem; color: #facc15; margin-left: auto; flex-shrink: 0; padding-top: 2px; }
+    .path-desc { flex: 1; }
+    footer { text-align: center; margin-top: 3rem; color: #334155; font-size: 0.8rem; padding-bottom: 2rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Event Management API</h1>
+    <p>Scalable backend for managing events and booking tickets</p>
+    <div class="badge-row">
+      <span class="badge badge-green">v1.0.0</span>
+      <span class="badge badge-blue">REST</span>
+      <span class="badge badge-violet">JWT Auth</span>
+    </div>
+    <a class="docs-link" href="/api/docs">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Open Swagger UI
+    </a>
+  </header>
+
+  <div class="section">
+    <h2>Endpoints</h2>
+
+    <div class="endpoint-group">
+      <h3>Auth</h3>
+      <div class="endpoint">
+        <span class="method POST">POST</span>
+        <div class="path-desc">
+          <div class="path">/api/auth/register</div>
+          <div class="desc">Register a new user (ORGANIZER or CUSTOMER)</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method POST">POST</span>
+        <div class="path-desc">
+          <div class="path">/api/auth/login</div>
+          <div class="desc">Login and receive a JWT token</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint-group">
+      <h3>Events</h3>
+      <div class="endpoint">
+        <span class="method GET">GET</span>
+        <div class="path-desc">
+          <div class="path">/api/events</div>
+          <div class="desc">List events — supports <code>page</code>, <code>limit</code>, <code>location</code>, <code>date</code></div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method POST">POST</span>
+        <div class="path-desc">
+          <div class="path">/api/events</div>
+          <div class="desc">Create a new event</div>
+        </div>
+        <span class="lock" title="Requires authentication">🔒 Organizer</span>
+      </div>
+      <div class="endpoint">
+        <span class="method GET">GET</span>
+        <div class="path-desc">
+          <div class="path">/api/events/:id</div>
+          <div class="desc">Get event details</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method PUT">PUT</span>
+        <div class="path-desc">
+          <div class="path">/api/events/:id</div>
+          <div class="desc">Update an event</div>
+        </div>
+        <span class="lock" title="Requires authentication">🔒 Organizer</span>
+      </div>
+      <div class="endpoint">
+        <span class="method DELETE">DELETE</span>
+        <div class="path-desc">
+          <div class="path">/api/events/:id</div>
+          <div class="desc">Delete an event</div>
+        </div>
+        <span class="lock" title="Requires authentication">🔒 Organizer</span>
+      </div>
+    </div>
+
+    <div class="endpoint-group">
+      <h3>Bookings</h3>
+      <div class="endpoint">
+        <span class="method POST">POST</span>
+        <div class="path-desc">
+          <div class="path">/api/bookings</div>
+          <div class="desc">Book tickets for an event</div>
+        </div>
+        <span class="lock" title="Requires authentication">🔒 Customer</span>
+      </div>
+      <div class="endpoint">
+        <span class="method GET">GET</span>
+        <div class="path-desc">
+          <div class="path">/api/bookings/my</div>
+          <div class="desc">Get your own bookings</div>
+        </div>
+        <span class="lock" title="Requires authentication">🔒 Auth</span>
+      </div>
+      <div class="endpoint">
+        <span class="method DELETE">DELETE</span>
+        <div class="path-desc">
+          <div class="path">/api/bookings/:id/cancel</div>
+          <div class="desc">Cancel a booking</div>
+        </div>
+        <span class="lock" title="Requires authentication">🔒 Auth</span>
+      </div>
+    </div>
+
+    <div class="endpoint-group">
+      <h3>Health</h3>
+      <div class="endpoint">
+        <span class="method GET">GET</span>
+        <div class="path-desc">
+          <div class="path">/health</div>
+          <div class="desc">Service health check</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>event-cactro &mdash; Event Management &amp; Ticket Booking API</footer>
+</div>
+</body>
+</html>

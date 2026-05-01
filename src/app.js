@@ -36,6 +36,11 @@ app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/bookings', bookingRoutes);
 
+// Welcome / API index page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'welcome.html'));
+});
+
 // Health check
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK' });

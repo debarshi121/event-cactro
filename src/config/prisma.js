@@ -1,7 +1,16 @@
 const { PrismaClient } = require('@prisma/client');
 const logger = require('../utils/logger');
 
+// Append pgbouncer=true to prevent "prepared statement already exists" errors
+// when a connection pooler (e.g. PgBouncer) reuses connections across clients.
+function buildDatasourceUrl(base) {
+  if (!base) return base;
+  const sep = base.includes('?') ? '&' : '?';
+  return base.includes('pgbouncer') ? base : `${base}${sep}pgbouncer=true`;
+}
+
 const prisma = new PrismaClient({
+  datasourceUrl: buildDatasourceUrl(process.env.DATABASE_URL),
   log: [
     { emit: 'event', level: 'query' },
     { emit: 'event', level: 'error' },
