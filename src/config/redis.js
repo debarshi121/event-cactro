@@ -6,8 +6,8 @@ const redisConfig = {
   port: parseInt(process.env.REDIS_PORT) || 6379,
   password: process.env.REDIS_PASSWORD || undefined,
   maxRetriesPerRequest: null,
-  // Enable TLS for cloud providers like Upstash (required for rediss://)
-  tls: process.env.REDIS_PASSWORD ? {} : undefined,
+  // Enable TLS only when explicitly requested (e.g. Upstash rediss://)
+  tls: process.env.REDIS_TLS === 'true' ? {} : undefined,
 };
 
 const connection = new Redis(redisConfig);
